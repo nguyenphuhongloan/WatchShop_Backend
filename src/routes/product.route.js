@@ -1,0 +1,10 @@
+const express = require("express");
+const Controller = require("../controllers/product.controller");
+const Validate = require("../validators/index");
+const SchemaValidateProduct = require("../validators/product.validators");
+const router = express.Router();
+router.get("/", Controller.getProduct);
+router.post("/", Validate.body(SchemaValidateProduct.create) ,Controller.createProduct);
+router.put("/", Validate.body(SchemaValidateProduct.edit), Controller.editProduct);
+router.delete("/", Validate.body(SchemaValidateProduct.delete), Controller.deleteProduct);
+module.exports = router;
