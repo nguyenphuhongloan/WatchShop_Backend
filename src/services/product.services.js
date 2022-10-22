@@ -1,46 +1,30 @@
-const number = require("@hapi/joi/lib/types/number");
 const PRODUCT = require("../models/product.model");
-const getProduct = async (query) => {
+const jwt = require("../services/jwt.services")
+const getAllProducts = async (query) => {
     try {
         var products;
-        const page = !query["page"] ? 1 : query["page"];
-        const numberProductofPage = 12;
-        const search = !query["search"] ? "" : query["search"];
-        const idTrademark = !query["idtrademark"] ? { $exists: true } : query["idtrademark"];
-        const category = query["category"]? { $exists: true } : query["category"];
-        const price = !query["low"] || !query["high"] ? { $exists: true } : {
-            $gte: query["low"],
-            $lte: query["high"],
-        };
-        console.log(idTrademark)
-        const status = !query["status"] ? 0 : status;
-        console.log(query);
-        if(search!="")
+        const page = query["page"];
+        const numberProductsOfPage = query["numberProductsOfPage"];
+        const status = query["status"] ? query["status"] : {$exists: true};
+        const totalProducts = await PRODUCT.find().count({
+            status: status
+        });
+       if(numberProductsOfPage != "all")
             products = await PRODUCT.find({
-                $text: {$search: search},
-                idTrademark: idTrademark,
-                price: price,
-                status: 0,
-            }).skip(numberProductofPage*(page-1)).limit(numberProductofPage);
-        else 
-            products = await PRODUCT.find({
-                idTrademark: idTrademark,
-                price: price,
-                status: 0,
-            }).skip(numberProductofPage * (page - 1)).limit(numberProductofPage);
-        const sort = !query["sort"] ? 0 : Number(query["sort"]);
-        if(sort ==1)
-            products.sort((a, b) => a.price > b.price ? 1 : -1);
-        else if(sort == 2)
-            products.sort((a, b) => a.price < b.price ? 1 : -1);
-        else if(sort == 3)
-            products.sort((a, b) => a.amount > b.amount ? 1 : -1);
-        else if(sort == 4)
-            products.sort((a, b) => a.amount > b.amount ? 1 : -1);
+                status: status,
+            }).sort({[query.sort]: query.type}).skip(numberProductsOfPage * (page - 1)).limit(numberProductsOfPage);
         return {
             success: true,
             message: "Get product successfully",
-            data: products,
+            data: {
+                totalProducts: totalProducts,
+                products: products,
+                paging: {
+                    page: page,
+                    numberProductsOfPage: numberProductsOfPage,
+                    totalPage: Math.ceil(totalProducts / numberProductsOfPage),
+                },
+            },
         }
     } catch (err) {
         return {
@@ -65,7 +49,6 @@ const createProduct = async (body) => {
             data: product
         }
     } catch (err) {
-        console.log(err)
         return {
             success: false,
             message: "An error occurred"
@@ -117,7 +100,7 @@ const deleteProduct = async (body) => {
     }
 }
 module.exports = {
-    getProduct,
+    getAllProducts,
     createProduct,
     editProduct,
     deleteProduct

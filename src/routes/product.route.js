@@ -2,9 +2,13 @@ const express = require("express");
 const Controller = require("../controllers/product.controller");
 const Validate = require("../validators/index");
 const SchemaValidateProduct = require("../validators/product.validators");
+const jwt = require("../services/jwt.services")
 const router = express.Router();
-router.get("/", Controller.getProduct);
-router.post("/", Validate.body(SchemaValidateProduct.create) ,Controller.createProduct);
-router.put("/", Validate.body(SchemaValidateProduct.edit), Controller.editProduct);
-router.delete("/", Validate.body(SchemaValidateProduct.delete), Controller.deleteProduct);
+router.get("/getAllProducts", Validate.query(SchemaValidateProduct.pages),
+    Validate.query(SchemaValidateProduct.sort),
+    Validate.query(SchemaValidateProduct.status),
+    Controller.getAllProducts);
+router.post("/createProduct", jwt.verify, Validate.body(SchemaValidateProduct.create), Controller.createProduct);
+router.put("/editProduct", jwt.verify, Validate.body(SchemaValidateProduct.edit), Controller.editProduct);
+router.delete("/deleteProduct", jwt.verify, Validate.body(SchemaValidateProduct.delete), Controller.deleteProduct);
 module.exports = router;

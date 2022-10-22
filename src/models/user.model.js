@@ -8,5 +8,6 @@ const user = new Schema({
     avatar: defaultModel.string,
     address: defaultModel.stringR,
     position: defaultModel.stringR,
+    status: defaultModel.number,
 });
 module.exports = mongoose.model("User", user);

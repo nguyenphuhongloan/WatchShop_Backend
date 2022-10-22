@@ -1,3 +1,16 @@
+const query = (schema) => {
+    return (req, res, next) => {
+        const ValidatorResult = schema.validate(req.body);
+        if(ValidatorResult.error){
+            return res.status(400).json(ValidatorResult.error.details);
+        }
+        if(!req.query)
+            req.query = {};
+        const obj = Object.assign( ValidatorResult.value, req.query);
+        req.query = obj;
+        next();
+    }
+}
 const body = (schema) => {
     return (req, res, next) => {
         const ValidatorResult = schema.validate(req.body);
@@ -15,4 +28,7 @@ const body = (schema) => {
         }
     }
 }
-module.exports = { body }
+module.exports = { 
+    query,
+    body
+}

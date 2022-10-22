@@ -21,6 +21,24 @@ const schemas = {
     }),
     delete: joi.object().keys({
         id: joi.string().required(),
+    }),
+    search: joi.object().keys({
+        name: joi.string().required(),
+    }),
+    pages: joi.object().keys({
+        page: joi.number().default(1),
+        numberProductsOfPage: joi.number().default(12),
+    }),
+    sort: joi.object().keys({
+        sort: joi.string().valid("price", "amount"),
+        type: joi.string().valid("asc", "desc"),
+    }),
+    price: joi.object().keys({
+        low: joi.number().default(0),
+        high: joi.number().required(),
+    }),
+    status: joi.object().keys({
+        status: joi.number().min(0).max(2),
     })
 };
 module.exports = schemas;

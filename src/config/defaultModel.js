@@ -8,7 +8,7 @@ const defaultModel = {
     boolean: {type: Boolean, default:true},
     booleanFalse: {type: Boolean, default:false},
     email: { type: String, required: true, match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/ },
-    password: { type: String, match: /^.{ 8, }$/ },
+    password: { type: String, match: /^.{8,}$/ },
     phoneNumber: { type: String, match: /^0[0-9]{9}$/ },
     dateNow: { type: Date, default: Date.now() },
     array: { type: Array, default: []},
@@ -21,6 +21,11 @@ const defaultBillStatus = {
     cancelled: 3,
 };
 const defaultUserStatus = {
+    active: 0,
+    inactive: 1,
+    deleted: 2,
+};
+const defaultProductStatus = {
     active: 0,
     inactive: 1,
     deleted: 2,
