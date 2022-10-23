@@ -1,17 +1,17 @@
 const defaultModel = {
-    date: {type: Date},
-    string: {type: String, default: ""},
-    stringR: {type: String, required: true},
-    stringU: {type: String, required: true, unique: true},
-    number: {type: Number, default: 0},
-    numberR: {type: Number, required: true},
-    boolean: {type: Boolean, default:true},
-    booleanFalse: {type: Boolean, default:false},
+    date: { type: Date },
+    string: { type: String, default: "" },
+    stringR: { type: String, required: true },
+    stringU: { type: String, required: true, unique: true },
+    number: { type: Number, default: 0 },
+    numberR: { type: Number, required: true },
+    boolean: { type: Boolean, default: true },
+    booleanFalse: { type: Boolean, default: false },
     email: { type: String, required: true, match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/ },
     password: { type: String, match: /^.{8,}$/ },
     phoneNumber: { type: String, match: /^0[0-9]{9}$/ },
     dateNow: { type: Date, default: Date.now() },
-    array: { type: Array, default: []},
+    array: { type: Array, default: [] },
     object: { type: Object, default: {} },
 };
 const defaultBillStatus = {
@@ -34,4 +34,5 @@ module.exports = {
     defaultModel,
     defaultBillStatus,
     defaultUserStatus,
+    defaultProductStatus
 };
