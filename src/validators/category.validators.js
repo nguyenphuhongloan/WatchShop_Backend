@@ -12,6 +12,21 @@ const schemas = {
         subCategory: joi.array().items({
             name: joi.string(),
         })
+    }),
+    delete: joi.object().keys({
+        id: joi.string().required(),
+    }),
+    createSubCategory: joi.object().keys({
+        id: joi.string().required(),
+        subCategory: joi.object().keys({
+            name: joi.string().required(),
+        })
+    }),
+    editSubCategory: joi.object().keys({
+        id: joi.string().required(),
+        subCategory: joi.object().keys({
+            name: joi.string().required(),
+        })
     })
 };
 module.exports = schemas;

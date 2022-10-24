@@ -33,8 +33,56 @@ const editCategory = async (req, res, next) => {
         return controller.sendError(res);
     }
 }
+const deleteCategory = async (req, res, next) => {
+    try{
+        const resService = await categoryService.deleteCategory(req.body);
+        if (!resService) {
+            return controller.sendSuccess(res, resService.data, 300, resService.message);
+        }
+        return controller.sendSuccess(res, resService.data, 200, res.message);
+    } catch (err) {
+        return controller.sendError(res);
+    }
+}
+const createSubCategory = async (req, res, next) => {
+    try {
+        const resService = await categoryService.createSubCategory(req.body);
+        if (!resService) {
+            return controller.sendSuccess(res, resService.data, 300, resService.message);
+        }
+        return controller.sendSuccess(res, resService.data, 200, res.message);
+    } catch (err) {
+        return controller.sendError(res);
+    }
+}
+const editSubCategory = async (req, res, next) => {
+    try {
+        const resService = await categoryService.editSubCategory(req.body);
+        if (!resService) {
+            return controller.sendSuccess(res, resService.data, 300, resService.message);
+        }
+        return controller.sendSuccess(res, resService.data, 200, res.message);
+    } catch (err) {
+        return controller.sendError(res);
+    }
+}
+const deleteSubCategory = async (req, res, next) => {
+    try {
+        const resService = await categoryService.deleteSubCategory(req.body);
+        if (!resService) {
+            return controller.sendSuccess(res, resService.data, 300, resService.message);
+        }
+        return controller.sendSuccess(res, resService.data, 200, res.message);
+    } catch (err) {
+        return controller.sendError(res);
+    }
+}
 module.exports = {
     getAllCategories,
     createCategory,
     editCategory,
+    deleteCategory,
+    createSubCategory,
+    editSubCategory,
+    deleteSubCategory
 }

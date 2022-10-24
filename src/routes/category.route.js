@@ -6,4 +6,8 @@ const SchemaValidateCategory = require("../validators/category.validators");
 router.get("/getAllCategories", Controller.getAllCategories);
 router.post("/createCategory",Validate.body(SchemaValidateCategory.create), Controller.createCategory);
 router.put("/editCategory", Validate.body(SchemaValidateCategory.edit), Controller.editCategory);
+router.delete("/deleteCategory", Validate.body(SchemaValidateCategory.delete), Controller.deleteCategory);
+router.post("/createSubCategory", Validate.body(SchemaValidateCategory.createSubCategory), Controller.createSubCategory);
+router.put("/editSubCategory", Validate.body(SchemaValidateCategory.editSubCategory), Controller.editSubCategory);
+router.delete("/deleteSubCategory", Validate.body(SchemaValidateCategory.delete), Controller.deleteSubCategory);
 module.exports = router;

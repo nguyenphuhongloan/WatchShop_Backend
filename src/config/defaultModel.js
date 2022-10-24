@@ -29,10 +29,16 @@ const defaultProductStatus = {
     active: 0,
     inactive: 1,
     deleted: 2,
+};
+const defaultCategoryStatus = {
+    active: 0,
+    inactive: 1,
+    deleted: 2,
 }
 module.exports = {
     defaultModel,
     defaultBillStatus,
     defaultUserStatus,
-    defaultProductStatus
+    defaultProductStatus,
+    defaultCategoryStatus
 };
