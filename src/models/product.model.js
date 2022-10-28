@@ -8,6 +8,10 @@ const product = new Schema({
     image: defaultModel.string,
     amount: defaultModel.number,
     idTrademark: defaultModel.stringR,
+    idSubCategories: [{
+        _id: false,
+        id: defaultModel.string,
+    }],
     status: defaultModel.number
 });
 module.exports = mongoose.model('Product', product);

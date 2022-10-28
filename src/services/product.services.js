@@ -1,5 +1,7 @@
 const PRODUCT = require("../models/product.model");
 const jwt = require("../services/jwt.services")
+const upload = require("../services/upload.services")
+const {PRODUCTS_FOLDER} = require("../config/index")
 const getAllProducts = async (query) => {
     try {
         var products;
@@ -35,6 +37,11 @@ const getAllProducts = async (query) => {
 };
 const createProduct = async (body) => {
     try {
+        const file = await upload.uploadFile(body.file, PRODUCTS_FOLDER);
+        if(!file.success){
+            return file;
+        }
+        body.image = file.data.url;
         const product = await PRODUCT.create(body);
         if (!product) {
             return {

@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const defaultModel = {
     date: { type: Date },
     string: { type: String, default: "" },
@@ -13,6 +14,11 @@ const defaultModel = {
     dateNow: { type: Date, default: Date.now() },
     array: { type: Array, default: [] },
     object: { type: Object, default: {} },
+    id: {
+        type: mongoose.Types.ObjectId,
+        default: () => { return new mongoose.Types.ObjectId() },
+        index: true,
+    }
 };
 const defaultBillStatus = {
     waitingConfirm: 0,
@@ -34,11 +40,22 @@ const defaultCategoryStatus = {
     active: 0,
     inactive: 1,
     deleted: 2,
+};
+const defaultPermission = {
+    Product: "Quản lý sản phẩm",
+    Category: "Quản lý thể loại",
+    Trademark: "Quản lý thương hiệu",
+    Staff: "Quản lý nhân viên",
+    Customer: "Quản lý khách hàng",
+    Import: "Quản lý nhập hàng",
+    PositionPermission: "Quản lý quyền và chức vụ",
+    Statistical: "Quản lý thống kê và báo cáo",
 }
 module.exports = {
     defaultModel,
     defaultBillStatus,
     defaultUserStatus,
     defaultProductStatus,
-    defaultCategoryStatus
+    defaultCategoryStatus,
+    defaultPermission
 };

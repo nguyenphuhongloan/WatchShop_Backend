@@ -22,8 +22,12 @@ const body = (schema) => {
                 req.value = {};
             if (!req.value['body'])
                 req.value.body = {};
+            if (!req.value.body['file'])
+                req.value.body.file = {};
             const obj = Object.assign(req.value.body, ValidatorResult.value);
             req.value.body = obj;
+            if (req.value.body['file'])
+                req.value.body.file = req.file;
             next();
         }
     }

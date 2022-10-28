@@ -5,11 +5,7 @@ const category = new Schema({
     name: defaultModel.stringU,
     subCategory:
         [{
-            _id: {
-                type: mongoose.Types.ObjectId,
-                default: () => { return new mongoose.Types.ObjectId() },
-                index: true,
-            },
+            _id: defaultModel.id,
             name: defaultModel.stringU,
         }]
 });

@@ -4,7 +4,7 @@ const app = express();
 const db = require("./config/database.js");
 const routes = require("./routes/index.js");
 const server = require("http").Server(app);
-const cors = require("cors")
+const cors = require("cors");
 db.connect();
 app.use(cors());
 app.use(express.urlencoded({extended: true}));

@@ -4,9 +4,12 @@ const schemas = {
         name: joi.string().required(),
         description: joi.string(),
         price: joi.number().required(),
-        image: joi.string(),
+        image: joi.any(),
         amount: joi.number().required(),
         idTrademark: joi.string().required(),
+        idSubCategories: joi.array().items({
+            id: joi.string(),
+        }),
         status: joi.number(),
     }),
     edit: joi.object().keys({
@@ -17,6 +20,9 @@ const schemas = {
         image: joi.string(),
         amount: joi.number(),
         idTrademark: joi.string(),
+        idSubCategories: joi.array().items({
+            id: joi.string(),
+        }),
         status: joi.number(),
     }),
     delete: joi.object().keys({
