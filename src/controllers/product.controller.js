@@ -3,7 +3,19 @@ const controller = require("./index");
 const getAllProducts = async (req, res, next) => {
     try {
         const resService = await productService.getAllProducts(req.query);
-        if(!resService.success){
+        if (!resService.success) {
+            return controller.sendSuccess(res, resService.data, 300, resService.message);
+        }
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
+    } catch (err) {
+        return controller.sendError(res);
+    }
+};
+const getProductById = async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const resService = await productService.getProductById(id);
+        if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
         return controller.sendSuccess(res, resService.data, 200, resService.message);
@@ -46,6 +58,7 @@ const deleteProduct = async (req, res, next) => {
 }
 module.exports = {
     getAllProducts,
+    getProductById,
     createProduct,
     editProduct,
     deleteProduct,

@@ -35,13 +35,36 @@ const getAllProducts = async (query) => {
         }
     }
 };
+const getProductById = async (id) => {
+    try {
+        const product = await PRODUCT.findById(id);
+        if(!product) {
+            return {
+                success: false,
+                message: "Product not found",
+            }
+        }
+        return {
+            success: true,
+            message: "Get product successfully",
+            data: product
+        }
+    } catch (err) {
+        return {
+            success: false,
+            message: "An error occurred"
+        }
+    }
+}
 const createProduct = async (body) => {
     try {
-        const file = await upload.uploadFile(body.file, PRODUCTS_FOLDER);
-        if(!file.success){
-            return file;
+        if(body.file){
+            const file = await upload.uploadFile(body.file, PRODUCTS_FOLDER);
+            if(!file.success){
+                return file;
+            };
+            body.image = file.data.url;
         }
-        body.image = file.data.url;
         const product = await PRODUCT.create(body);
         if (!product) {
             return {
@@ -108,7 +131,8 @@ const deleteProduct = async (body) => {
 }
 module.exports = {
     getAllProducts,
+    getProductById,
     createProduct,
     editProduct,
-    deleteProduct
+    deleteProduct,
 }
