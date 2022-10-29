@@ -1,7 +1,7 @@
 const PRODUCT = require("../models/product.model");
-const jwt = require("../services/jwt.services")
-const upload = require("../services/upload.services")
-const {PRODUCTS_FOLDER} = require("../config/index")
+const jwt = require("../services/jwt.services");
+const upload = require("../services/upload.services");
+const {PRODUCTS_FOLDER} = require("../config/index");
 const getAllProducts = async (query) => {
     try {
         var products;
@@ -87,6 +87,13 @@ const createProduct = async (body) => {
 };
 const editProduct = async (body) => {
     try {
+        if (body.file) {
+            const file = await upload.uploadFile(body.file, PRODUCTS_FOLDER);
+            if (!file.success) {
+                return file;
+            };
+            body.image = file.data.url;
+        }
         const product = await PRODUCT.findByIdAndUpdate({ _id: body.id }, body, { new: true });
         if (!product) {
             return {

@@ -17,7 +17,7 @@ const schemas = {
         name: joi.string(),
         description: joi.string(),
         price: joi.number(),
-        image: joi.string(),
+        image: joi.any(),
         amount: joi.number(),
         idTrademark: joi.string(),
         idSubCategories: joi.array().items({
