@@ -1,23 +1,51 @@
 const PRODUCT = require("../models/product.model");
 const jwt = require("../services/jwt.services");
 const upload = require("../services/upload.services");
-const {PRODUCTS_FOLDER} = require("../config/index");
+const { PRODUCTS_FOLDER } = require("../config/index");
+const CATEGORY = require("../models/category.model");
+const categoryService = require("../services/category.services");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
+const addSubCategoryProductModel = async (products) => {
+    try{
+        const category = await categoryService.getAllSubCategories();
+        products.map(o => o.subCategory = []);
+        products.forEach((item, index) => {
+            for (let i = 0; i < item.idSubCategories.length; i++) {
+                const subCategory = category.data.find(c => c._id.toHexString() === item.idSubCategories[i].id);
+                item.subCategory.push(subCategory)
+            }
+        });
+        return products;
+    } catch(err){
+
+    }
+}
 const getAllProducts = async (query) => {
     try {
         var products;
         const page = query["page"];
         const numberProductsOfPage = query["numberProductsOfPage"];
-        const status = query["status"] ? query["status"] : {$exists: true};
+        const status = query["status"] ? query["status"] : { $exists: true };
         const totalProducts = await PRODUCT.find().count({
             status: status
         });
-       if(numberProductsOfPage != "all")
-            products = await PRODUCT.find({
-                status: status,
-            }).sort({[query.sort]: query.type}).skip(numberProductsOfPage * (page - 1)).limit(numberProductsOfPage);
+        
+        products = await PRODUCT.aggregate([
+            { $addFields: { idTrademark: { $toObjectId: "$idTrademark" } } },
+            {
+                $lookup: {
+                    localField: "idTrademark",
+                    from: "trademarks",
+                    foreignField: "_id",
+                    as: "trademark"
+                }
+            },
+        ]).sort({ [query.sort]: query.type }).skip(numberProductsOfPage * (page - 1)).limit(numberProductsOfPage);
+        products = await addSubCategoryProductModel(products);
         return {
             success: true,
-            message: "Get product successfully",
+            message: "Get products successfully",
             data: {
                 totalProducts: totalProducts,
                 products: products,
@@ -37,13 +65,28 @@ const getAllProducts = async (query) => {
 };
 const getProductById = async (id) => {
     try {
-        const product = await PRODUCT.findById(id);
-        if(!product) {
+        const product = await PRODUCT.aggregate([
+            { $addFields: { idTrademark: { $toObjectId: "$idTrademark" } } },
+            {
+                $lookup: {
+                    localField: "idTrademark",
+                    from: "trademarks",
+                    foreignField: "_id",
+                    as: "trademark"
+                }
+            }, {
+                $match: {
+                    _id:  ObjectId(id)
+                }
+            }
+        ])
+        if (!product) {
             return {
                 success: false,
                 message: "Product not found",
             }
         }
+        const data = await addSubCategoryProductModel(product);
         return {
             success: true,
             message: "Get product successfully",
@@ -58,9 +101,9 @@ const getProductById = async (id) => {
 }
 const createProduct = async (body) => {
     try {
-        if(body.file){
+        if (body.file) {
             const file = await upload.uploadFile(body.file, PRODUCTS_FOLDER);
-            if(!file.success){
+            if (!file.success) {
                 return file;
             };
             body.image = file.data.url;

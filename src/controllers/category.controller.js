@@ -44,6 +44,17 @@ const deleteCategory = async (req, res, next) => {
         return controller.sendError(res);
     }
 }
+const getAllSubCategories = async (req, res, next) => {
+    try {
+        const resService = await categoryService.getAllSubCategories();
+        if (!resService) {
+            return controller.sendSuccess(res, resService.data, 300, resService.message);
+        }
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
+    } catch (err) {
+        return controller.sendError(res);
+    }
+};
 const createSubCategory = async (req, res, next) => {
     try {
         const resService = await categoryService.createSubCategory(req.body);
@@ -82,6 +93,7 @@ module.exports = {
     createCategory,
     editCategory,
     deleteCategory,
+    getAllSubCategories,
     createSubCategory,
     editSubCategory,
     deleteSubCategory

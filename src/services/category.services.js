@@ -84,6 +84,34 @@ const deleteCategory = async (body) => {
         }
     }
 }
+const getAllSubCategories = async () => {
+    try {
+        const subCategory = await CATEGORY.aggregate([{
+            $project: {
+                "subCategory.name": 1,
+                "subCategory._id": 1,
+                _id: 0
+            }
+        }, { $unwind: "$subCategory" },
+        { $replaceRoot: { newRoot: "$subCategory" } }]);
+        if (!subCategory) {
+            return {
+                success: false,
+                message: "Get sub category failed"
+            };
+        };
+        return {
+            success: true,
+            message: "Get sub category successfully",
+            data: subCategory,
+        }
+    } catch (err) {
+        return {
+            success: false,
+            message: "An error occurred",
+        }
+    }
+}
 const createSubCategory = async (body) => {
     try {
         const subCategory = await CATEGORY.findByIdAndUpdate(
@@ -116,13 +144,13 @@ const createSubCategory = async (body) => {
 const editSubCategory = async (body) => {
     try {
         const subCategory = await CATEGORY.findOneAndUpdate(
-            {"subCategory._id": body.id},
+            { "subCategory._id": body.id },
             {
                 $set: {
                     "subCategory.$.name": body.subCategory.name
                 }
             }, { new: true })
-        
+
         if (!subCategory) {
             return {
                 success: false,
@@ -176,6 +204,7 @@ module.exports = {
     createCategory,
     editCategory,
     deleteCategory,
+    getAllSubCategories,
     createSubCategory,
     editSubCategory,
     deleteSubCategory
