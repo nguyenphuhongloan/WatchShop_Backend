@@ -34,12 +34,12 @@ const verify = (req, res, next) => {
         if(!req.value["header"])
             req.value["header"] = {};
         Object.assign(req.value.header, { 
-            decodeToken: tokenDecoded,
+            tokenDecoded: tokenDecoded,
             token: token });
         next();
     });
 }
 module.exports = {
     createToken,
-    verify
+    verify,
 };

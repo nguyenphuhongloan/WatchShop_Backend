@@ -56,7 +56,6 @@ const editPosition = async (body) => {
             data: position
         }
     } catch (err) {
-        console.log(err)
         return {
             success: false,
             message: "An error occurred"

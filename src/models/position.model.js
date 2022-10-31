@@ -3,9 +3,10 @@ const {defaultModel} = require("../config/defaultModel");
 const Schema = mongoose.Schema;
 const position = new Schema({
     name: defaultModel.stringU,
-    idPermission: [
+    permission: [
         {
-            id: defaultModel.id
+            _id: false,
+            name: defaultModel.stringU,
         }
     ]
 });
