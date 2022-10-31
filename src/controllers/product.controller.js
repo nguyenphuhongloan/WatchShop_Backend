@@ -23,6 +23,18 @@ const getProductById = async (req, res, next) => {
         return controller.sendError(res);
     }
 };
+const getProductByIdTrademark = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const resService = await productService.getProductByIdTrademark(id);
+        if (!resService.success) {
+            return controller.sendSuccess(res, resService.data, 300, resService.message);
+        }
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
+    } catch (err) {
+        return controller.sendError(res);
+    }
+};
 const createProduct = async (req, res, next) => {
     try{
         const resService = await productService.createProduct(req.value.body);
@@ -59,6 +71,7 @@ const deleteProduct = async (req, res, next) => {
 module.exports = {
     getAllProducts,
     getProductById,
+    getProductByIdTrademark,
     createProduct,
     editProduct,
     deleteProduct,

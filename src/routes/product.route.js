@@ -12,6 +12,7 @@ router.get("/getAllProducts", Validate.query(SchemaValidateProduct.pages),
     Validate.query(SchemaValidateProduct.status),
     Controller.getAllProducts);
 router.get("/getProductById/:id", Controller.getProductById);
+router.get("/getProductByIdTrademark/:id", Controller.getProductByIdTrademark);
 router.post("/createProduct", jwt.verify, Permission.checkPermission(defaultPermission.Product), multer.single("image"), Validate.body(SchemaValidateProduct.create), Controller.createProduct);
 router.put("/editProduct", jwt.verify, Permission.checkPermission(defaultPermission.Product), multer.single("image"), Validate.body(SchemaValidateProduct.edit), Controller.editProduct);
 router.delete("/deleteProduct", jwt.verify, Permission.checkPermission(defaultPermission.Product), Validate.body(SchemaValidateProduct.delete), Controller.deleteProduct);

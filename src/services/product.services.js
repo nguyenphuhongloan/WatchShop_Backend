@@ -90,7 +90,44 @@ const getProductById = async (id) => {
         return {
             success: true,
             message: "Get product successfully",
-            data: product
+            data: data
+        }
+    } catch (err) {
+        return {
+            success: false,
+            message: "An error occurred"
+        }
+    }
+}
+const getProductByIdTrademark = async (id) => {
+    try {
+        const product = await PRODUCT.aggregate([
+            {
+                $match: {
+                    idTrademark: id
+                }
+            },
+            { $addFields: { idTrademark: { $toObjectId: "$idTrademark" } } },
+            {
+                $lookup: {
+                    localField: "idTrademark",
+                    from: "trademarks",
+                    foreignField: "_id",
+                    as: "trademark"
+                }
+            }, 
+        ])
+        if (!product) {
+            return {
+                success: false,
+                message: "Product not found",
+            }
+        }
+        const data = await addSubCategoryProductModel(product);
+        return {
+            success: true,
+            message: "Get product successfully",
+            data: data
         }
     } catch (err) {
         return {
@@ -182,6 +219,7 @@ const deleteProduct = async (body) => {
 module.exports = {
     getAllProducts,
     getProductById,
+    getProductByIdTrademark,
     createProduct,
     editProduct,
     deleteProduct,
