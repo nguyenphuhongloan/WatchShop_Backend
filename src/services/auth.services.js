@@ -1,4 +1,5 @@
 const USER = require("../models/user.model");
+const POSITION = require("../models/position.model");
 const jwt = require("../services/jwt.services");
 const bcrypt = require("bcryptjs");
 
@@ -14,7 +15,12 @@ const register = async (body) => {
         }
         const hashPassword = await bcrypt.hash(body.password, 8);
         body["password"] = hashPassword;
-        body["position"] = !body["position"] ? 0 : body["position"];
+        if(!body["position"]){
+            const positionCustomer = await POSITION.findOne({
+                name: "Khách hàng"
+            });
+            body["position"] = positionCustomer._id;
+        }
         const user = await USER.create(body);
         if (!user) {
             return {
@@ -22,6 +28,7 @@ const register = async (body) => {
                 message: "Create user failed",
             };
         };
+        delete user._doc['password'];
         const token = jwt.createToken(user._id);
         return {
             success: true,
@@ -54,7 +61,8 @@ const login = async (body) => {
                 success: false,
                 message: "Wrong password",
             };
-        }
+        };
+        delete user._doc["password"];
         const token = await jwt.createToken(user._id);
         return {
             success: true,

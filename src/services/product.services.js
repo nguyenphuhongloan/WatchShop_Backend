@@ -30,7 +30,7 @@ const getAllProducts = async (query) => {
         const totalProducts = await PRODUCT.find().count({
             status: status
         });
-        
+        console.log(numberProductsOfPage)
         products = await PRODUCT.aggregate([
             { $addFields: { idTrademark: { $toObjectId: "$idTrademark" } } },
             {
@@ -41,7 +41,7 @@ const getAllProducts = async (query) => {
                     as: "trademark"
                 }
             },
-        ]).sort({ [query.sort]: query.type }).skip(numberProductsOfPage * (page - 1)).limit(numberProductsOfPage);
+        ]).sort({ [query.sort]: query.type }).skip(numberProductsOfPage * (page - 1)).limit(Number(numberProductsOfPage));
         products = await addSubCategoryProductModel(products);
         return {
             success: true,
@@ -57,6 +57,7 @@ const getAllProducts = async (query) => {
             },
         }
     } catch (err) {
+        console.log(err)
         return {
             success: false,
             message: "An error occurred",
