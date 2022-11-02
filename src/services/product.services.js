@@ -91,7 +91,7 @@ const getProductById = async (id) => {
         return {
             success: true,
             message: "Get product successfully",
-            data: data
+            data: data[0]
         }
     } catch (err) {
         return {
