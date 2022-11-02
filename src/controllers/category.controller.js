@@ -3,7 +3,7 @@ const controller = require("./index");
 const getAllCategories = async (req, res, next) => {
     try {
         const resService = await categoryService.getAllCategories();
-        if (!resService) {
+        if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
         return controller.sendSuccess(res, resService.data, 200, resService.message);
@@ -14,10 +14,10 @@ const getAllCategories = async (req, res, next) => {
 const createCategory = async (req, res, next) => {
     try{
         const resService = await categoryService.createCategory(req.body);
-        if (!resService) {
+        if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
-        return controller.sendSuccess(res, resService.data, 200, res.message);
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
     } catch (err) {
         return controller.sendError(res);
     }
@@ -25,10 +25,10 @@ const createCategory = async (req, res, next) => {
 const editCategory = async (req, res, next) => {
     try{
         const resService = await categoryService.editCategory(req.body);
-        if (!resService) {
+        if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
-        return controller.sendSuccess(res, resService.data, 200, res.message);
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
     } catch (err) {
         return controller.sendError(res);
     }
@@ -36,10 +36,10 @@ const editCategory = async (req, res, next) => {
 const deleteCategory = async (req, res, next) => {
     try{
         const resService = await categoryService.deleteCategory(req.body);
-        if (!resService) {
+        if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
-        return controller.sendSuccess(res, resService.data, 200, res.message);
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
     } catch (err) {
         return controller.sendError(res);
     }
@@ -47,7 +47,7 @@ const deleteCategory = async (req, res, next) => {
 const getAllSubCategories = async (req, res, next) => {
     try {
         const resService = await categoryService.getAllSubCategories();
-        if (!resService) {
+        if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
         return controller.sendSuccess(res, resService.data, 200, resService.message);
@@ -58,10 +58,10 @@ const getAllSubCategories = async (req, res, next) => {
 const createSubCategory = async (req, res, next) => {
     try {
         const resService = await categoryService.createSubCategory(req.body);
-        if (!resService) {
+        if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
-        return controller.sendSuccess(res, resService.data, 200, res.message);
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
     } catch (err) {
         return controller.sendError(res);
     }
@@ -69,10 +69,10 @@ const createSubCategory = async (req, res, next) => {
 const editSubCategory = async (req, res, next) => {
     try {
         const resService = await categoryService.editSubCategory(req.body);
-        if (!resService) {
+        if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
-        return controller.sendSuccess(res, resService.data, 200, res.message);
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
     } catch (err) {
         return controller.sendError(res);
     }
@@ -80,10 +80,10 @@ const editSubCategory = async (req, res, next) => {
 const deleteSubCategory = async (req, res, next) => {
     try {
         const resService = await categoryService.deleteSubCategory(req.body);
-        if (!resService) {
+        if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
-        return controller.sendSuccess(res, resService.data, 200, res.message);
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
     } catch (err) {
         return controller.sendError(res);
     }
