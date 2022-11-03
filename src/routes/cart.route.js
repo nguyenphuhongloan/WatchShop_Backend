@@ -1,0 +1,11 @@
+const express = require("express");
+const router = express.Router();
+const Controller = require("../controllers/cart.controller");
+const SchemasValidateCart = require("../validators/cart.validator");
+const Validate = require("../validators/index");
+router.get("/viewCart", Controller.viewCart);
+router.post("/addToCart", Validate.body(SchemasValidateCart.add), Controller.addToCart);
+router.put("/subtractFromCart", Validate.body(SchemasValidateCart.subtract), Controller.subtractFromCart);
+router.delete("/deleteFromCart", Validate.body(SchemasValidateCart.delete), Controller.deleteFromCart);
+router.delete("/deleteAllCart", Controller.deleteAllCart);
+module.exports = router;
