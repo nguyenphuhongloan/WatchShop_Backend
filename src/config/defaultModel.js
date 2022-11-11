@@ -47,6 +47,7 @@ const defaultPermission = {
     Trademark: "Quản lý thương hiệu",
     Staff: "Quản lý nhân viên",
     Customer: "Quản lý khách hàng",
+    Bill: "Quản lý hoá đơn",
     Import: "Quản lý nhập hàng",
     PositionPermission: "Quản lý quyền và chức vụ",
     Statistical: "Quản lý thống kê và báo cáo",

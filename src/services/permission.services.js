@@ -27,7 +27,6 @@ const checkPermission = (namePermission) => {
                 message: "Not enough permissions"
             });
         } catch (err) {
-            console.log(err)
             res.status(200).json({
                 success: false,
                 message: 'An error occurred while checking permissions'

@@ -1,4 +1,3 @@
-const Joi = require("@hapi/joi");
 const joi = require("@hapi/joi");
 const schemas = {
     add: joi.object().keys({

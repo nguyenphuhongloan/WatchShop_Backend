@@ -30,7 +30,6 @@ const getAllProducts = async (query) => {
         const totalProducts = await PRODUCT.find().count({
             status: status
         });
-        console.log(numberProductsOfPage)
         products = await PRODUCT.aggregate([
             { $addFields: { idTrademark: { $toObjectId: "$idTrademark" } } },
             {
