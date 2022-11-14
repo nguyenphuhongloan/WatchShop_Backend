@@ -3,7 +3,7 @@ const PRODUCT = require("../models/product.model");
 const {defaultBillStatus} = require("../config/defaultModel"); 
 const getAllBills = async () => {
     try {
-        const bill = await BILL.find();
+        const bill = await BILL.find().populate("detailBill.idProduct");
         if(!bill){
             return {
                 success: false,
@@ -199,7 +199,7 @@ const getBillByUserId = async (id) => {
     try {
         const bill = await BILL.find({
             idUser: id
-        });
+        }).populate("detailBill.idProduct");
         if(!bill){
             return {
                 success: false,
@@ -221,7 +221,7 @@ const getBillByUserId = async (id) => {
 
 const getDetailBill = async (id, idUser) => {
     try{
-        const bill = await BILL.findById(id);
+        const bill = await BILL.findById(id).populate("detailBill.idProduct");
         if(!bill) {
             return {
                 success: false,

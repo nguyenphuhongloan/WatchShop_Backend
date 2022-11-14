@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Controller = require("../controllers/cart.controller");
-const SchemasValidateCart = require("../validators/cart.validator");
+const SchemasValidateCart = require("../validators/cart.validators");
 const Validate = require("../validators/index");
 router.get("/viewCart", Controller.viewCart);
 router.post("/addToCart", Validate.body(SchemasValidateCart.add), Controller.addToCart);
