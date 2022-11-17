@@ -56,13 +56,13 @@ const getAllProducts = async (query) => {
             },
         }
     } catch (err) {
-        console.log(err)
         return {
             success: false,
             message: "An error occurred",
         }
     }
 };
+
 const getProductById = async (id) => {
     try {
         const product = await PRODUCT.aggregate([
@@ -138,13 +138,6 @@ const getProductByIdTrademark = async (id) => {
 }
 const createProduct = async (body) => {
     try {
-        if (body.file) {
-            const file = await upload.uploadFile(body.file, PRODUCTS_FOLDER);
-            if (!file.success) {
-                return file;
-            };
-            body.image = file.data.url;
-        }
         const product = await PRODUCT.create(body);
         if (!product) {
             return {
@@ -166,14 +159,7 @@ const createProduct = async (body) => {
     }
 };
 const editProduct = async (body) => {
-    try {
-        if (body.file) {
-            const file = await upload.uploadFile(body.file, PRODUCTS_FOLDER);
-            if (!file.success) {
-                return file;
-            };
-            body.image = file.data.url;
-        }
+    try{
         const product = await PRODUCT.findByIdAndUpdate({ _id: body.id }, body, { new: true });
         if (!product) {
             return {

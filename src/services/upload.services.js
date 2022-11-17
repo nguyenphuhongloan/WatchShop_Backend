@@ -1,7 +1,7 @@
 const drive = require("../config/upload");
-const { PARENTS_FOLDER } = require("../config/index")
+const { PARENT_FOLDER } = require("../config/index")
 const stream = require('stream');
-const uploadFile = async (file, dir=PARENTS_FOLDER) => {
+const uploadFile = async (file, dir = PARENT_FOLDER) => {
     try {
         const bufferStream = new stream.PassThrough();
         bufferStream.end(file.buffer);
@@ -39,7 +39,6 @@ const uploadFile = async (file, dir=PARENTS_FOLDER) => {
             }
         }
     } catch (err) {
-        ;
         return {
             success: false,
             message: "An error occurred"

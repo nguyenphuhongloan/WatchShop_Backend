@@ -7,10 +7,16 @@ const product = new Schema({
     price: defaultModel.number,
     image: defaultModel.string,
     amount: defaultModel.number,
-    idTrademark: defaultModel.stringR,
+    idTrademark: {
+        type: Schema.ObjectId,
+        ref: "Trademark"
+    },
     idSubCategories: [{
         _id: false,
-        id: defaultModel.string,
+        id: {
+            type: Schema.ObjectId,
+            ref: "Category.subCategory._id"
+        },
     }],
     status: defaultModel.number
 });
