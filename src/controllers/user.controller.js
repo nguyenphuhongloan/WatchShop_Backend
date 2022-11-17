@@ -10,7 +10,7 @@ const getAllCustomers = async (req, res, next) => {
     } catch (err) {
         return controller.sendError(res)
     }
-}
+};
 const getAllStaffs = async (req, res, next) => {
     try {
         const resService = await userService.getAllStaffs();
@@ -21,8 +21,20 @@ const getAllStaffs = async (req, res, next) => {
     } catch (err) {
         return controller.sendError(res)
     }
+};
+const getMyProfile = async (req, res, next) => {
+    try {
+        const resService = await userService.getMyProfile(req.value.header.tokenDecoded.data);
+        if (!resService.success) {
+            return controller.sendSuccess(res, resService.data, 300, resService.message);
+        }
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
+    } catch (err) {
+        return controller.sendError(res)
+    }
 }
 module.exports = {
     getAllCustomers,
-    getAllStaffs
+    getAllStaffs,
+    getMyProfile
 }

@@ -7,7 +7,10 @@ const user = new Schema({
     password: defaultModel.password,
     avatar: defaultModel.string,
     address: defaultModel.stringR,
-    position: defaultModel.stringR,
+    position: {
+        type: Schema.ObjectId,
+        ref: "Position"
+    },
     status: defaultModel.number,
 });
 module.exports = mongoose.model("User", user);

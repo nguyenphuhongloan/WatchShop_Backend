@@ -1,6 +1,8 @@
 const USER = require("../models/user.model");
 const POSITION = require("../models/position.model");
-const {defaultPermission} = require("../config/defaultModel")
+const {defaultPermission} = require("../config/defaultModel");
+const jwt = require("../services/jwt.services");
+const bcrypt = require("bcryptjs");
 const getAllCustomers = async (query) =>{
     try {
         const customer = await POSITION.findOne({name: "Khách hàng"});
@@ -28,7 +30,7 @@ const getAllStaffs = async (query) => {
     try {
         const customer = await POSITION.findOne({ name: "Khách hàng" });
         const customerId = customer._id;
-        const user = await USER.find({ position: { $ne: customerId } });
+        const user = await USER.find({ position: { $ne: customerId } }).populate("position");
         if (!user) {
             return {
                 success: false,
@@ -46,30 +48,31 @@ const getAllStaffs = async (query) => {
     } catch (err) {
 
     }
-}
-const createUser = async (body) =>{
-    try{
-        const user = await USER.create(body);
-        if(!user){
+};
+const getMyProfile = async (id) => {
+    try {
+        const user = await USER.findById(id);
+        if (!user) {
             return {
                 success: false,
-                message: "Create user failed",
+                message: "Get profile failed",
                 data: user,
             };
         };
         return {
             success: true,
-            message: "Create user successfully",
+            message: "Get profile successfully",
             data: user
         };
-    } catch(err){
+    } catch (err) {
         return {
             success: false,
             message: "An error occurred",
         };
     }
-};
+}
 module.exports = {
     getAllCustomers,
-    getAllStaffs
+    getAllStaffs,
+    getMyProfile
 }

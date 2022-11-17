@@ -6,4 +6,5 @@ const Permission = require("../services/permission.services");
 const jwt = require("../services/jwt.services");
 router.get("/getAllCustomers", jwt.verify, Permission.checkPermission(defaultPermission.Customer), Controller.getAllCustomers);
 router.get("/getAllStaffs", jwt.verify, Permission.checkPermission(defaultPermission.Staff),Controller.getAllStaffs);
+router.get("/getMyProfile", jwt.verify, Controller.getMyProfile);
 module.exports = router;
