@@ -7,7 +7,6 @@ const uploadFile = async (req, res, next) => {
         var dir = PARENT_FOLDER
         if(req.baseUrl == "/product")
             dir = PRODUCTS_FOLDER
-        console.log(dir)
         const resService = await uploadService.uploadFile(req.file, dir);
         if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
