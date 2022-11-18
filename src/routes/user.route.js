@@ -1,10 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const Controller = require("../controllers/user.controller");
+const SchemaValidateUser = require("../validators/user.validatiors");
+const Validate = require("../validators/index");
 const {defaultPermission} = require("../config/defaultModel");
 const Permission = require("../services/permission.services");
 const jwt = require("../services/jwt.services");
 router.get("/getAllCustomers", jwt.verify, Permission.checkPermission(defaultPermission.Customer), Controller.getAllCustomers);
 router.get("/getAllStaffs", jwt.verify, Permission.checkPermission(defaultPermission.Staff),Controller.getAllStaffs);
 router.get("/getMyProfile", jwt.verify, Controller.getMyProfile);
+router.get("/getStaffById/:id", jwt.verify, jwt.verify, Permission.checkPermission(defaultPermission.Staff), Controller.getStaffById);
+router.get("/getCustomerById/:id", jwt.verify, jwt.verify, Permission.checkPermission(defaultPermission.Customer), Controller.getCustomerById);
+router.post("/editStaff", jwt.verify, Permission.checkPermission(defaultPermission.Staff), Validate.body(SchemaValidateUser.edit), Controller.editStaff);
+router.post("/editMyProfile", jwt.verify, Validate.body(SchemaValidateUser.editProfile), Controller.editMyProfile);
 module.exports = router;

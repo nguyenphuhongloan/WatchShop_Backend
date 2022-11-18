@@ -1,14 +1,14 @@
 const USER = require("../models/user.model");
 const POSITION = require("../models/position.model");
-const {defaultPermission} = require("../config/defaultModel");
+const { defaultPermission } = require("../config/defaultModel");
 const jwt = require("../services/jwt.services");
 const bcrypt = require("bcryptjs");
-const getAllCustomers = async (query) =>{
+const getAllCustomers = async (query) => {
     try {
-        const customer = await POSITION.findOne({name: "Khách hàng"});
+        const customer = await POSITION.findOne({ name: "Khách hàng" });
         const customerId = customer._id;
-        const user = await USER.find({position: customerId});
-        if(!user){
+        const user = await USER.find({ position: customerId });
+        if (!user) {
             return {
                 success: false,
                 message: "Get users failed",
@@ -70,9 +70,111 @@ const getMyProfile = async (id) => {
             message: "An error occurred",
         };
     }
+};
+const getUserById = async (id, role) => {
+    try {
+        const user = await USER.findById(id);
+        if (!user) {
+            return {
+                success: false,
+                message: "User not found",
+            }
+        }
+        const customer = await POSITION.findOne({ name: "Khách hàng" });
+        const customerId = customer._id;
+
+        if (role == "Customer") {
+    
+            if (user.position.toHexString() != customerId.toHexString())
+                return {
+                    success: false,
+                    message: "User not found",
+                }
+        } else {
+            if (user.position.toHexString() == customerId.toHexString())
+                return {
+                    success: false,
+                    message: "User not found",
+                }
+        }
+        return {
+            success: true,
+            message: "Get user successfully",
+            data: user
+        }
+    } catch (err) {
+        return {
+            success: false,
+            message: "An error occurred",
+        };
+    }
+};
+const editStaff = async (body) => {
+    try {
+        if(body.position){
+            const position = await POSITION.findById(body.position);
+            const customer = await POSITION.findOne({ name: "Khách hàng" });
+            const customerId = customer._id;
+            if (body.position == customerId.toHexString() || position == null) {
+                return {
+                    success: false,
+                    message: "Position invalid"
+                }
+            }
+        }
+        if(body.password){
+            const hashPassword = await bcrypt.hash(body.password, 8);
+            body["password"] = hashPassword;
+        }
+        const user = await USER.findByIdAndUpdate(body.id, body, {new: true});
+        if(!user) {
+            return {
+                success: false,
+                message: "Edit staff failed"
+            }
+        }
+        return {
+            success: true,
+            message: "Edit staff successfully",
+            data: user
+        }
+    } catch (err) {
+        return {
+            success: false,
+            message: "An error occurred",
+        };
+    }
+};
+const editMyProfile = async (body) => {
+    try{
+        if (body.password) {
+            const hashPassword = await bcrypt.hash(body.password, 8);
+            body["password"] = hashPassword;
+        }
+        const user = await USER.findByIdAndUpdate(body.id, body, { new: true });
+        if (!user) {
+            return {
+                success: false,
+                message: "Edit staff failed"
+            }
+        }
+        return {
+            success: true,
+            message: "Edit staff successfully",
+            data: user
+        }
+    } catch (err) {
+        return {
+            success: false,
+            message: "An error occurred",
+        };
+    }
 }
 module.exports = {
     getAllCustomers,
     getAllStaffs,
-    getMyProfile
+    getMyProfile,
+    getUserById,
+    editStaff,
+    editMyProfile
 }
