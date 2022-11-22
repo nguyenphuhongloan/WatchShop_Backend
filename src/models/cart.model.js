@@ -9,6 +9,7 @@ class Cart {
         this.items = oldCart.items;
         this.total = oldCart.total;
         this.add = async (data) => {
+            data.amount = Number(data.amount);
             if (data.amount <= 0)
                 return {
                     success: false,
@@ -41,6 +42,7 @@ class Cart {
             };
         };
         this.subtract = (data) => {
+            data.amount = Number(data.amount);
             if (data.amount <= 0)
                 return {
                     success: false,

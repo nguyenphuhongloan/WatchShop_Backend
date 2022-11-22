@@ -16,7 +16,7 @@ const addToCart = async (req, res, next) => {
         const cart = new Cart(req.session.cart);
         const resCart = await cart.add(req.body);
         if(!resCart.success){
-            return controller.sendSuccess(res, cart, 200, resCart.message);
+            return controller.sendSuccess(res, cart, 300, resCart.message);
         };
         req.session.cart = cart;
         return controller.sendSuccess(res, cart, 200, resCart.message);
@@ -29,7 +29,7 @@ const subtractFromCart = (req, res, next) => {
         const cart = new Cart(req.session.cart);
         const resCart = cart.subtract(req.body);
         if (!resCart.success) {
-            return controller.sendSuccess(res, cart, 200, resCart.message);
+            return controller.sendSuccess(res, cart, 300, resCart.message);
         };
         req.session.cart = cart;
         return controller.sendSuccess(res, cart, 200, resCart.message);
