@@ -1,12 +1,16 @@
 const Cart = require("../models/cart.model");
 const controller = require("../controllers/index");
-const viewCart = (req, res, next) => {
+const viewCart = async (req, res, next) => {
     try {
         const cart = req.session.cart;
         if (!cart) {
             return controller.sendSuccess(res, {}, 200, "Cart empty");
         }
-        controller.sendSuccess(res, cart, 200, "Get cart successfully");
+        
+        const cartRes = new Cart(req.session.cart);
+        const data = await cartRes.view();
+        console.log(data);
+        controller.sendSuccess(res, data, 200, "Get cart successfully");
     } catch (err) {
         return controller.sendError(res);
     }

@@ -8,6 +8,21 @@ class Cart {
         }
         this.items = oldCart.items;
         this.total = oldCart.total;
+        this.view = async () => {
+            const data = [];
+            for (const item of this.items) {
+                const product = await PRODUCT.findById(item.idProduct);
+                console.log(item)
+                const newItem = Object.assign({}, item, { product: product })
+                data.push(newItem);
+            }
+            console.log(data)
+            return {
+                items: data,
+                total: this.total
+            }
+           
+        }
         this.add = async (data) => {
             data.amount = Number(data.amount);
             if (data.amount <= 0)
@@ -35,7 +50,7 @@ class Cart {
             }
             else
                 this.items.push(data);
-            this.total = this.items.length;
+                this.total = this.items.length;
             return {
                 success: true,
                 message: "Add to cart successfully"

@@ -9,5 +9,8 @@ const configEnv = {
     REFRESH_TOKEN: process.env.REFRESH_TOKEN,
     PARENTS_FOLDER: process.env.PARENTS_FOLDER,
     PRODUCTS_FOLDER: process.env.PRODUCTS_FOLDER,
+    EMAIL: process.env.EMAIL,
+    REFRESH_TOKEN_MAIL: process.env.REFRESH_TOKEN_MAIL,
+    CLIENT_URL: process.env.CLIENT_URL,
 };
 module.exports = configEnv;
