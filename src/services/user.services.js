@@ -109,6 +109,31 @@ const getUserById = async (id, role) => {
         };
     }
 };
+const createUser = async (body) => {
+    try {
+        if (!body.position) {
+                const customer = await POSITION.findOne({ name: "Khách hàng" });
+                body.position = customer._id;
+            }
+        const user = await USER.create(body);
+        if(!user){
+            return {
+                success: false,
+                message: "Create user failed",
+            }
+        }
+        return {
+            success: true,
+            message: "Create user successfully",
+            data: user
+        }
+    } catch (err) {
+        return {
+            success: false,
+            message: "An error occurred",
+        }
+    }
+}
 const editStaff = async (body) => {
     try {
         if(body.position){
@@ -175,6 +200,7 @@ module.exports = {
     getAllStaffs,
     getMyProfile,
     getUserById,
+    createUser,
     editStaff,
     editMyProfile
 }

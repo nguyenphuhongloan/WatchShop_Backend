@@ -19,5 +19,17 @@ const schemas = {
         email: joi.string().required(),
         password: joi.string().min(6).required(),
     }),
+    changePassword: joi.object().keys({
+        email: joi.string().required(),
+        password: joi.string().required(),
+        newPassword: joi.string().required(),
+    }),
+    requireResetPassword: joi.object().keys({
+        email: joi.string().required(),
+    }),
+    resetPassword: joi.object().keys({
+        email: joi.string().required(),
+        password: joi.string().required(),
+    })
 };
 module.exports = schemas;

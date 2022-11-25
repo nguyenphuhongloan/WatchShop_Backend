@@ -9,6 +9,7 @@ const server = require("http").Server(app);
 const cors = require("cors");
 const morgan = require("morgan");
 const cookieSession = require("cookie-session");
+const cookieParser = require('cookie-parser')
 db.connect();
 app.use(morgan("dev"))
 app.use(express.urlencoded({ extended: true }));
@@ -21,7 +22,8 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", CLIENT_URL);
     res.setHeader('Access-Control-Allow-Credentials', true);
     next()
-})
+});
+app.use(cookieParser());
 app.use(cookieSession({
     keys: [ACCESS_TOKEN_SECRET],
     name: "session",

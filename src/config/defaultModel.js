@@ -8,7 +8,7 @@ const defaultModel = {
     numberR: { type: Number, required: true },
     boolean: { type: Boolean, default: true },
     booleanFalse: { type: Boolean, default: false },
-    email: { type: String, required: true, match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/ },
+    email: { type: String, required: true, match: /^[\w-\.\+]+@([\w-]+\.)+[\w-]{2,4}$/ },
     password: { type: String, match: /^.{8,}$/ },
     phoneNumber: { type: String, match: /^0[0-9]{9}$/ },
     dateNow: { type: Date, default: Date.now() },
