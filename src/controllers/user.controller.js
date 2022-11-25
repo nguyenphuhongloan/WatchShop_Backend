@@ -13,7 +13,7 @@ const getAllCustomers = async (req, res, next) => {
 };
 const getAllStaffs = async (req, res, next) => {
     try {
-        const resService = await userService.getAllStaffs();
+        const resService = await userService.getAllStaffs(req.query);
         if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
