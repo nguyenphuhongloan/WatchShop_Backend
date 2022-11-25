@@ -73,7 +73,7 @@ const getMyProfile = async (id) => {
 };
 const getUserById = async (id, role) => {
     try {
-        const user = await USER.findById(id).populate("position");
+        const user = await USER.findById(id);
         if (!user) {
             return {
                 success: false,
@@ -100,7 +100,7 @@ const getUserById = async (id, role) => {
         return {
             success: true,
             message: "Get user successfully",
-            data: user
+            data: await user.populate("position")
         }
     } catch (err) {
         return {
