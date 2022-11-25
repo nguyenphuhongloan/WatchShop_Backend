@@ -5,7 +5,8 @@ const bcrypt = require("bcryptjs");
 const emailService = require("../services/email.services");
 const {defaultMailOptionsValues} = require("../config/email");
 const base = require("@hapi/joi/lib/base");
-const register = async (body, protocal) => {
+const {CLIENT_URL} = require("../config/index");
+const register = async (body) => {
     try{
         const email = body.email;
         const emailExists = await USER.findOne({ email: email });
@@ -15,7 +16,7 @@ const register = async (body, protocal) => {
                 message: "Email already exists",
             }
         }
-        return sendEmailToken(body, protocal, defaultMailOptionsValues.Register);
+        return sendEmailToken(body, defaultMailOptionsValues.Register);
     } catch(err){
         return {
             success: false,
@@ -67,7 +68,7 @@ const saveUser = async (body) => {
     };
 };
 
-const sendEmailToken = (body, host, option) => {
+const sendEmailToken = (body,option) => {
     try{
         const token = jwt.createTokenOTP(body);
         var baseUrl = ""
@@ -81,7 +82,7 @@ const sendEmailToken = (body, host, option) => {
             default:
                 break;
         }
-        const link = "http://"+ host + baseUrl + token;
+        const link = CLIENT_URL + baseUrl + token;
         const sendEmail = emailService.sendEmail(body.email, link, option);
         return {
             success: true,
@@ -170,7 +171,7 @@ const changePassword = async (body, id) => {
         }
     }
 };
-const requireResetPassword = async (email, protocal) => {
+const requireResetPassword = async (email) => {
     try{
         const user = await USER.findOne({ email: email });
         if (!user) {
@@ -182,7 +183,7 @@ const requireResetPassword = async (email, protocal) => {
         const body = {
             email: email,
         }
-        return sendEmailToken(body, protocal, defaultMailOptionsValues.ResetPassword);
+        return sendEmailToken(body,  defaultMailOptionsValues.ResetPassword);
     } catch (err) {
         return {
             success: false,

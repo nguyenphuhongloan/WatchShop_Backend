@@ -3,7 +3,7 @@ const controller = require("../controllers/index");
 const jwt = require("../services/jwt.services")
 const register = async (req, res, next) => {
     try{
-        const resService = await authService.register(req.body, req.headers.host);
+        const resService = await authService.register(req.body);
         if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
@@ -37,7 +37,7 @@ const verified = async (req, res, next) => {
 }
 const requireResetPassword = async (req, res, next) => {
     try {
-        const resService = await authService.requireResetPassword(req.body.email, req.headers.host);
+        const resService = await authService.requireResetPassword(req.body.email);
         if (!resService.success) {
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         }
