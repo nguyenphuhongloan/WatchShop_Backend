@@ -3,16 +3,16 @@ const billService = require("../services/bill.services");
 const createBill = async (req, res, next) => {
     try {
         const resService = await billService.createBill(req.body);
-        if(!resService.success)
+        if (!resService.success)
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         return controller.sendSuccess(res, resService.data, 200, resService.message);
-    } catch(err){
+    } catch (err) {
         return controller.sendError(res)
     }
 };
 const confirmBill = async (req, res, next) => {
     try {
-        const resService = await billService.confirmBill(req.body);
+        const resService = await billService.confirmBill(req.value.body);
         if (!resService.success)
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         return controller.sendSuccess(res, resService.data, 200, resService.message);
@@ -44,7 +44,7 @@ const cancelBill = async (req, res, next) => {
 };
 const getAllBills = async (req, res, next) => {
     try {
-        const resService = await billService.getAllBills();
+        const resService = await billService.getAllBills(req.query);
         if (!resService.success)
             return controller.sendSuccess(res, resService.data, 300, resService.message);
         return controller.sendSuccess(res, resService.data, 200, resService.message);
@@ -53,11 +53,11 @@ const getAllBills = async (req, res, next) => {
     }
 }
 const getBillByUserId = async (req, res, next) => {
-    try{
+    try {
         var id;
-        if(req.path == "/getAllMyBills")
+        if (req.path == "/getAllMyBills")
             id = req.value.header.tokenDecoded.data;
-        else 
+        else
             id = req.params.id;
         const resService = await billService.getBillByUserId(id);
         if (!resService.success)
@@ -69,12 +69,12 @@ const getBillByUserId = async (req, res, next) => {
 };
 const getDetailBill = async (req, res, next) => {
     try {
-        const {id} = req.params;
-        const idUser =  (req.route.path == "/getMyDetailBill/:id") ? req.value.header.tokenDecoded.data : "";
+        const { id } = req.params;
+        const idUser = (req.route.path == "/getMyDetailBill/:id") ? req.value.header.tokenDecoded.data : "";
         const resService = await billService.getDetailBill(id, idUser);
         if (!resService.success)
             return controller.sendSuccess(res, resService.data, 300, resService.message);
-        return controller.sendSuccess(res, resService.data, 200, resService.message); 
+        return controller.sendSuccess(res, resService.data, 200, resService.message);
     } catch (err) {
         return controller.sendError(res)
     }

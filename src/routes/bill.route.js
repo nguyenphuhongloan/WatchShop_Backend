@@ -11,7 +11,9 @@ route.post("/confirmBill", jwt.verify, Permission.checkPermission(defaultPermiss
 route.post("/tranferringBill", jwt.verify, Permission.checkPermission(defaultPermission.Bill), Validate.body(SchemasValidateBill.changeStatus), Controller.tranferringBill);
 route.post("/cancelBillUser", jwt.verify, Validate.body(SchemasValidateBill.changeStatus), Controller.cancelBill);
 route.post("/cancelBill", jwt.verify, Permission.checkPermission(defaultPermission.Bill), Validate.body(SchemasValidateBill.changeStatus), Controller.cancelBill);
-route.get("/getAllBills", jwt.verify, Permission.checkPermission(defaultPermission.Bill), Controller.getAllBills);
+route.get("/getAllBills", jwt.verify, Permission.checkPermission(defaultPermission.Bill),
+    Validate.query(SchemasValidateBill.sort), Validate.query(SchemasValidateBill.totalPrice), Validate.query(SchemasValidateBill.pages), 
+    Validate.query(SchemasValidateBill.date), Validate.query(SchemasValidateBill.status),Controller.getAllBills);
 route.get("/getAllMyBills", jwt.verify, Controller.getBillByUserId);
 route.get("/getBillByUserId/:id", jwt.verify, Permission.checkPermission(defaultPermission.Bill), Controller.getBillByUserId)
 route.get("/getMyDetailBill/:id", jwt.verify, Controller.getDetailBill);

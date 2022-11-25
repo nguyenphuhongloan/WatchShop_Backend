@@ -1,9 +1,18 @@
 const BILL = require("../models/bill.model");
 const PRODUCT = require("../models/product.model");
 const {defaultBillStatus} = require("../config/defaultModel"); 
-const getAllBills = async () => {
+const getAllBills = async (query) => {
     try {
-        const bill = await BILL.find().populate("detailBill.idProduct");
+        var bills;
+        const page = query["page"];
+        const numberProductsOfPage = query["numberProductsOfPage"];
+        const status = query["status"] ? query["status"] : -1;
+        const total = {};
+        var findOptions = {}
+        if (status != -1)
+            Object.assign(findOptions, {status: Number(status)});
+        const bill = await BILL.find(findOptions).populate("detailBill.idProduct")
+                    .skip(numberProductsOfPage * (page - 1)).limit(Number(numberProductsOfPage));
         if(!bill){
             return {
                 success: false,
@@ -16,6 +25,7 @@ const getAllBills = async () => {
             data: bill
         }
     } catch (err) {
+        console.log(err)
         return {
             success: false,
             message: "An error occured",
